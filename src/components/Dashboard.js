@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './Dashboard.css';
 import { useQuery, gql } from '@apollo/client';
-import { TextField, Grid, Card, CardContent, Typography, CardMedia, CircularProgress, Select, MenuItem, InputLabel, FormControl } from '@material-ui/core';
+import { TextField, Grid, Card, CardContent, Typography, CardMedia, CircularProgress, Select, MenuItem, InputLabel, FormControl, Pagination } from '@material-ui/core';
 
 const GET_POKEMONS = gql`
   {
@@ -18,6 +18,8 @@ function Dashboard() {
   const { loading, error, data } = useQuery(GET_POKEMONS);
   const [searchTerm, setSearchTerm] = useState('');
   const [sortType, setSortType] = useState('number');
+  const [page, setPage] = useState(1);
+  const itemsPerPage = 20;
 
   if (loading) return <CircularProgress />;
   if (error) return <p>Error :(</p>;
@@ -30,6 +32,8 @@ function Dashboard() {
       }
       return a.number - b.number;
     });
+
+  const paginatedPokemons = filteredPokemons.slice((page - 1) * itemsPerPage, page * itemsPerPage);
 
   return (
     <div className="dashboard">
@@ -53,7 +57,7 @@ function Dashboard() {
         </Select>
       </FormControl>
       <Grid container spacing={3}>
-        {filteredPokemons.map(pokemon => (
+        {paginatedPokemons.map(pokemon => (
           <Grid item xs={12} sm={6} md={4} lg={3} key={pokemon.id}>
             <Card>
               <CardMedia
@@ -76,6 +80,11 @@ function Dashboard() {
           </Grid>
         ))}
       </Grid>
+      <Pagination
+        count={Math.ceil(filteredPokemons.length / itemsPerPage)}
+        page={page}
+        onChange={(event, value) => setPage(value)}
+      />
     </div>
   );
 }
