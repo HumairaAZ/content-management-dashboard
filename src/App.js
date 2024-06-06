@@ -5,7 +5,7 @@ import './App.css';
 
 function App() {
   return (
-    <Router>
+    <Router basename="/content-management-dashboard">
       <div className="App">
         <Switch>
           <Route path="/" exact component={Dashboard} />
