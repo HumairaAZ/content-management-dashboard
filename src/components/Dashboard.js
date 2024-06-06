@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './Dashboard.css';
 import { useQuery, gql } from '@apollo/client';
-import { TextField, Grid, Card, CardContent, Typography, CardMedia, CircularProgress, Select, MenuItem, InputLabel, FormControl, Modal, Backdrop, Fade } from '@material-ui/core';
+import { TextField, Grid, Card, CardContent, Typography, CardMedia, Select, MenuItem, InputLabel, FormControl, Modal, Backdrop, Fade } from '@material-ui/core';
 import { Pagination, Skeleton } from '@material-ui/lab';
 import { motion } from 'framer-motion';
 
