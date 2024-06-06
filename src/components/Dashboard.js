@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, Suspense } from 'react';
 import './Dashboard.css';
 import { useQuery, gql } from '@apollo/client';
-import { TextField, Grid, Card, CardContent, Typography, CardMedia, Select, MenuItem, InputLabel, FormControl, Modal, Backdrop, Fade, Alert } from '@material-ui/core';
-import { Pagination, Skeleton } from '@material-ui/lab';
+import { TextField, Grid, Card, CardContent, Typography, CardMedia, Select, MenuItem, InputLabel, FormControl, Modal, Backdrop, Fade } from '@material-ui/core';
+import { Pagination, Skeleton, Alert } from '@material-ui/lab';
 import { motion } from 'framer-motion';
 
 const GET_POKEMONS = gql`
@@ -17,6 +17,8 @@ const GET_POKEMONS = gql`
     }
   }
 `;
+
+const LazyModal = React.lazy(() => import('./ModalComponent'));
 
 function Dashboard() {
   const { loading, error, data } = useQuery(GET_POKEMONS);
@@ -59,7 +61,7 @@ function Dashboard() {
   if (error) {
     return (
       <div className="dashboard">
-        <Alert severity="error">Failed to load Pokémon data. Please try again later.</Alert>
+        <Typography variant="h6" color="error">Failed to load Pokémon data. Please try again later.</Typography>
       </div>
     );
   }
@@ -156,29 +158,14 @@ function Dashboard() {
         onChange={(event, value) => setPage(value)}
         aria-label="pagination"
       />
-      {selectedPokemon && (
-        <Modal
-          open={!!selectedPokemon}
-          onClose={handleClose}
-          closeAfterTransition
-          BackdropComponent={Backdrop}
-          BackdropProps={{
-            timeout: 500,
-          }}
-          aria-labelledby="pokemon-modal-title"
-          aria-describedby="pokemon-modal-description"
-        >
-          <Fade in={!!selectedPokemon}>
-            <div className="modal-content">
-              <Typography id="pokemon-modal-title" variant="h4" gutterBottom>{selectedPokemon.name}</Typography>
-              <Typography id="pokemon-modal-description" variant="body1">Number: {selectedPokemon.number}</Typography>
-              <Typography variant="body1">Classification: {selectedPokemon.classification}</Typography>
-              <Typography variant="body1">Types: {selectedPokemon.types.join(', ')}</Typography>
-              <img src={selectedPokemon.image} alt={selectedPokemon.name} />
-            </div>
-          </Fade>
-        </Modal>
-      )}
+      <Suspense fallback={<div>Loading...</div>}>
+        {selectedPokemon && (
+          <LazyModal
+            pokemon={selectedPokemon}
+            handleClose={handleClose}
+          />
+        )}
+      </Suspense>
     </div>
   );
 }
