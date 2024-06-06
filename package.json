@@ -21,7 +21,10 @@
     "gh-pages": "^3.2.3",
     "@material-ui/core": "^4.12.3",
     "@material-ui/icons": "^4.11.2",
-    "@material-ui/lab": "^4.0.0-alpha.60"
+    "@material-ui/lab": "^4.0.0-alpha.60",
+    "framer-motion": "^4.1.17",
+    "graphql-tag": "^2.12.6",
+    "localforage": "^1.9.0"
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.18.6"
