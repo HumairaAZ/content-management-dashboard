@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './Dashboard.css';
 import { useQuery, gql } from '@apollo/client';
-import { TextField, Grid, Card, CardContent, Typography, CardMedia, Select, MenuItem, InputLabel, FormControl, Modal, Backdrop, Fade } from '@material-ui/core';
+import { TextField, Grid, Card, CardContent, Typography, CardMedia, Select, MenuItem, InputLabel, FormControl, Modal, Backdrop, Fade, Alert } from '@material-ui/core';
 import { Pagination, Skeleton } from '@material-ui/lab';
 import { motion } from 'framer-motion';
 
@@ -56,7 +56,13 @@ function Dashboard() {
     );
   }
 
-  if (error) return <p>Error :(</p>;
+  if (error) {
+    return (
+      <div className="dashboard">
+        <Alert severity="error">Failed to load Pokémon data. Please try again later.</Alert>
+      </div>
+    );
+  }
 
   const filteredPokemons = data.pokemons
     .filter(pokemon => pokemon.name.toLowerCase().includes(searchTerm.toLowerCase()) && (!typeFilter || pokemon.types.includes(typeFilter)))
@@ -66,6 +72,14 @@ function Dashboard() {
       }
       return a.number - b.number;
     });
+
+  if (filteredPokemons.length === 0) {
+    return (
+      <div className="dashboard">
+        <Typography variant="h6">No Pokémon found</Typography>
+      </div>
+    );
+  }
 
   const paginatedPokemons = filteredPokemons.slice((page - 1) * itemsPerPage, page * itemsPerPage);
 
