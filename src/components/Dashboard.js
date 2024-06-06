@@ -78,24 +78,29 @@ function Dashboard() {
         fullWidth
         margin="normal"
         onChange={e => setSearchTerm(e.target.value)}
+        inputProps={{ 'aria-label': 'search-pokemon' }}
       />
       <FormControl variant="outlined" fullWidth margin="normal">
-        <InputLabel>Sort By</InputLabel>
+        <InputLabel id="sort-label">Sort By</InputLabel>
         <Select
+          labelId="sort-label"
           value={sortType}
           onChange={e => setSortType(e.target.value)}
           label="Sort By"
+          inputProps={{ 'aria-label': 'sort-by' }}
         >
           <MenuItem value="number">Number</MenuItem>
           <MenuItem value="name">Name</MenuItem>
         </Select>
       </FormControl>
       <FormControl variant="outlined" fullWidth margin="normal">
-        <InputLabel>Filter by Type</InputLabel>
+        <InputLabel id="filter-label">Filter by Type</InputLabel>
         <Select
+          labelId="filter-label"
           value={typeFilter}
           onChange={e => setTypeFilter(e.target.value)}
           label="Filter by Type"
+          inputProps={{ 'aria-label': 'filter-by-type' }}
         >
           <MenuItem value="">All</MenuItem>
           <MenuItem value="Grass">Grass</MenuItem>
@@ -108,7 +113,7 @@ function Dashboard() {
       <Grid container spacing={3}>
         {paginatedPokemons.map(pokemon => (
           <Grid item xs={12} sm={6} md={4} lg={3} key={pokemon.id}>
-            <motion.div whileHover={{ scale: 1.1 }} onClick={() => handleOpen(pokemon)}>
+            <motion.div whileHover={{ scale: 1.1 }} onClick={() => handleOpen(pokemon)} tabIndex={0} role="button" aria-label={`View details of ${pokemon.name}`}>
               <Card>
                 <CardMedia
                   component="img"
@@ -135,6 +140,7 @@ function Dashboard() {
         count={Math.ceil(filteredPokemons.length / itemsPerPage)}
         page={page}
         onChange={(event, value) => setPage(value)}
+        aria-label="pagination"
       />
       {selectedPokemon && (
         <Modal
@@ -145,11 +151,13 @@ function Dashboard() {
           BackdropProps={{
             timeout: 500,
           }}
+          aria-labelledby="pokemon-modal-title"
+          aria-describedby="pokemon-modal-description"
         >
           <Fade in={!!selectedPokemon}>
             <div className="modal-content">
-              <Typography variant="h4" gutterBottom>{selectedPokemon.name}</Typography>
-              <Typography variant="body1">Number: {selectedPokemon.number}</Typography>
+              <Typography id="pokemon-modal-title" variant="h4" gutterBottom>{selectedPokemon.name}</Typography>
+              <Typography id="pokemon-modal-description" variant="body1">Number: {selectedPokemon.number}</Typography>
               <Typography variant="body1">Classification: {selectedPokemon.classification}</Typography>
               <Typography variant="body1">Types: {selectedPokemon.types.join(', ')}</Typography>
               <img src={selectedPokemon.image} alt={selectedPokemon.name} />
