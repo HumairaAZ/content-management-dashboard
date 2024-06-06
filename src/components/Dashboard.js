@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './Dashboard.css';
 import { useQuery, gql } from '@apollo/client';
-import { TextField, Grid, Card, CardContent, Typography, CardMedia, CircularProgress, Select, MenuItem, InputLabel, FormControl, Modal, Backdrop, Fade } from '@material-ui/core';
+import { TextField, Grid, Card, CardContent, Typography, CardMedia, CircularProgress, Select, MenuItem, InputLabel, FormControl, Modal, Backdrop, Fade, Skeleton } from '@material-ui/core';
 import { Pagination } from '@material-ui/lab';
 import { motion } from 'framer-motion';
 
@@ -27,7 +27,35 @@ function Dashboard() {
   const [selectedPokemon, setSelectedPokemon] = useState(null);
   const itemsPerPage = 20;
 
-  if (loading) return <CircularProgress />;
+  const handleOpen = (pokemon) => {
+    setSelectedPokemon(pokemon);
+  };
+
+  const handleClose = () => {
+    setSelectedPokemon(null);
+  };
+
+  if (loading) {
+    return (
+      <div className="dashboard">
+        <Typography variant="h4" gutterBottom>Loading Pokémon...</Typography>
+        <Grid container spacing={3}>
+          {Array.from(new Array(itemsPerPage)).map((_, index) => (
+            <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+              <Card>
+                <Skeleton variant="rect" width="100%" height={140} />
+                <CardContent>
+                  <Skeleton variant="text" width="60%" />
+                  <Skeleton variant="text" width="40%" />
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      </div>
+    );
+  }
+
   if (error) return <p>Error :(</p>;
 
   const filteredPokemons = data.pokemons
@@ -40,14 +68,6 @@ function Dashboard() {
     });
 
   const paginatedPokemons = filteredPokemons.slice((page - 1) * itemsPerPage, page * itemsPerPage);
-
-  const handleOpen = (pokemon) => {
-    setSelectedPokemon(pokemon);
-  };
-
-  const handleClose = () => {
-    setSelectedPokemon(null);
-  };
 
   return (
     <div className="dashboard">
