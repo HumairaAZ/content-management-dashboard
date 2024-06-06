@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import './Dashboard.css';
 import { useQuery, gql } from '@apollo/client';
-import { TextField, Grid, Card, CardContent, Typography, CardMedia, CircularProgress, Select, MenuItem, InputLabel, FormControl, Modal, Backdrop, Fade, Skeleton } from '@material-ui/core';
-import { Pagination } from '@material-ui/lab';
+import { TextField, Grid, Card, CardContent, Typography, CardMedia, CircularProgress, Select, MenuItem, InputLabel, FormControl, Modal, Backdrop, Fade } from '@material-ui/core';
+import { Pagination, Skeleton } from '@material-ui/lab';
 import { motion } from 'framer-motion';
 
 const GET_POKEMONS = gql`
