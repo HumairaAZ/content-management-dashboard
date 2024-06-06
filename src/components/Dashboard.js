@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Dashboard.css';
 import { useQuery, gql } from '@apollo/client';
+import { TextField, Grid, Card, CardContent, Typography, CardMedia, CircularProgress, Select, MenuItem, InputLabel, FormControl } from '@material-ui/core';
 
 const GET_POKEMONS = gql`
   {
-    pokemons(first: 10) {
+    pokemons(first: 151) {
       id
       number
       name
@@ -15,21 +16,66 @@ const GET_POKEMONS = gql`
 
 function Dashboard() {
   const { loading, error, data } = useQuery(GET_POKEMONS);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [sortType, setSortType] = useState('number');
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <CircularProgress />;
   if (error) return <p>Error :(</p>;
+
+  const filteredPokemons = data.pokemons
+    .filter(pokemon => pokemon.name.toLowerCase().includes(searchTerm.toLowerCase()))
+    .sort((a, b) => {
+      if (sortType === 'name') {
+        return a.name.localeCompare(b.name);
+      }
+      return a.number - b.number;
+    });
 
   return (
     <div className="dashboard">
-      <h1>Content Management Dashboard</h1>
-      <div className="pokemon-list">
-        {data.pokemons.map(pokemon => (
-          <div key={pokemon.id} className="pokemon-card">
-            <img src={pokemon.image} alt={pokemon.name} />
-            <p>{pokemon.name}</p>
-          </div>
+      <Typography variant="h4" gutterBottom>Content Management Dashboard</Typography>
+      <TextField
+        label="Search Pokémon"
+        variant="outlined"
+        fullWidth
+        margin="normal"
+        onChange={e => setSearchTerm(e.target.value)}
+      />
+      <FormControl variant="outlined" fullWidth margin="normal">
+        <InputLabel>Sort By</InputLabel>
+        <Select
+          value={sortType}
+          onChange={e => setSortType(e.target.value)}
+          label="Sort By"
+        >
+          <MenuItem value="number">Number</MenuItem>
+          <MenuItem value="name">Name</MenuItem>
+        </Select>
+      </FormControl>
+      <Grid container spacing={3}>
+        {filteredPokemons.map(pokemon => (
+          <Grid item xs={12} sm={6} md={4} lg={3} key={pokemon.id}>
+            <Card>
+              <CardMedia
+                component="img"
+                alt={pokemon.name}
+                height="140"
+                image={pokemon.image}
+                title={pokemon.name}
+                loading="lazy"
+              />
+              <CardContent>
+                <Typography gutterBottom variant="h5" component="h2">
+                  {pokemon.name}
+                </Typography>
+                <Typography variant="body2" color="textSecondary" component="p">
+                  #{pokemon.number}
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
         ))}
-      </div>
+      </Grid>
     </div>
   );
 }
