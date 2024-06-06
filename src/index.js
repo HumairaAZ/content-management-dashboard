@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import './App.css';
 import App from './App';
 import { ApolloProvider, InMemoryCache, ApolloClient } from '@apollo/client';
-import localforage from 'localforage';
 
 const client = new ApolloClient({
   uri: 'https://graphql-pokemon2.vercel.app/',
