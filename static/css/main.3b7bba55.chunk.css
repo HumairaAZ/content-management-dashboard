@@ -1,2 +1,0 @@
-.App{text-align:center}@tailwind base;@tailwind components;@tailwind utilities;.dashboard{@apply p-4}.modal-content{@apply p-8 bg-white rounded-lg shadow-lg;position:"absolute";width:100%;max-width:400px;outline:none;display:flex;flex-direction:column;align-items:center}
-/*# sourceMappingURL=main.3b7bba55.chunk.css.map */
