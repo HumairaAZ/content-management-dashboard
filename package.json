@@ -2,6 +2,7 @@
   "name": "content-management-dashboard",
   "version": "1.0.0",
   "description": "A feature-rich content management dashboard using React and GraphQL",
+  "homepage": "https://humairaaz.github.io/content-management-dashboard"
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
