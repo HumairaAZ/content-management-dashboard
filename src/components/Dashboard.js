@@ -72,8 +72,8 @@ function Dashboard() {
       <Grid container spacing={3}>
         {paginatedPokemons.map(pokemon => (
           <Grid item xs={12} sm={6} md={4} lg={3} key={pokemon.id}>
-            <motion.div whileHover={{ scale: 1.1 }}>
-              <Card onClick={() => handleOpen(pokemon)}>
+            <motion.div whileHover={{ scale: 1.1 }} onClick={() => handleOpen(pokemon)}>
+              <Card>
                 <CardMedia
                   component="img"
                   alt={pokemon.name}
