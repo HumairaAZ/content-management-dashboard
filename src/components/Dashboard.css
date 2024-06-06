@@ -9,7 +9,8 @@
 .modal-content {
   @apply p-8 bg-white rounded-lg shadow-lg;
   position: 'absolute';
-  width: 400px;
+  width: 100%;
+  max-width: 400px;
   outline: none;
   display: flex;
   flex-direction: column;
