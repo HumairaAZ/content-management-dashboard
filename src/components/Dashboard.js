@@ -22,6 +22,7 @@ function Dashboard() {
   const { loading, error, data } = useQuery(GET_POKEMONS);
   const [searchTerm, setSearchTerm] = useState('');
   const [sortType, setSortType] = useState('number');
+  const [typeFilter, setTypeFilter] = useState('');
   const [page, setPage] = useState(1);
   const [selectedPokemon, setSelectedPokemon] = useState(null);
   const itemsPerPage = 20;
@@ -30,7 +31,7 @@ function Dashboard() {
   if (error) return <p>Error :(</p>;
 
   const filteredPokemons = data.pokemons
-    .filter(pokemon => pokemon.name.toLowerCase().includes(searchTerm.toLowerCase()))
+    .filter(pokemon => pokemon.name.toLowerCase().includes(searchTerm.toLowerCase()) && (!typeFilter || pokemon.types.includes(typeFilter)))
     .sort((a, b) => {
       if (sortType === 'name') {
         return a.name.localeCompare(b.name);
@@ -67,6 +68,21 @@ function Dashboard() {
         >
           <MenuItem value="number">Number</MenuItem>
           <MenuItem value="name">Name</MenuItem>
+        </Select>
+      </FormControl>
+      <FormControl variant="outlined" fullWidth margin="normal">
+        <InputLabel>Filter by Type</InputLabel>
+        <Select
+          value={typeFilter}
+          onChange={e => setTypeFilter(e.target.value)}
+          label="Filter by Type"
+        >
+          <MenuItem value="">All</MenuItem>
+          <MenuItem value="Grass">Grass</MenuItem>
+          <MenuItem value="Poison">Poison</MenuItem>
+          <MenuItem value="Fire">Fire</MenuItem>
+          <MenuItem value="Water">Water</MenuItem>
+          {/* Add more types as needed */}
         </Select>
       </FormControl>
       <Grid container spacing={3}>
