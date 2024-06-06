@@ -8,6 +8,7 @@
 
 .modal-content {
   @apply p-8 bg-white rounded-lg shadow-lg;
+  background-color: white;
   position: 'absolute';
   width: 100%;
   max-width: 400px;
@@ -16,3 +17,4 @@
   flex-direction: column;
   align-items: center;
 }
+
